@@ -1,0 +1,53 @@
+.container-for-graphs {
+    height: 98%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.container-for-graph-info{
+    display: flex;
+    width: 98%;
+    height: 98vh;
+    flex-direction: row;
+}
+
+.img-of-graph {
+    width: 100%;
+    height: 100%;
+}
+
+.inscription-for-graph-in-container {
+    text-align: center;
+}
+
+.graph-info {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin:auto;
+    border: 1px solid gray;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.text-container {
+    width: 35vw;
+    height: 100%;
+    overflow-y: hidden;
+    margin-left: 1vw;
+}
+
+.graph-info p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.textview-for-interval-graph {
+    height: 20%;
+}

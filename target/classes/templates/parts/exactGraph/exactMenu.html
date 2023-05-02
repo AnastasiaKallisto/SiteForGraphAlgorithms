@@ -1,0 +1,11 @@
+<div id="menu">
+    <ul>
+        <li id="menuItem1" onclick='openForm("setQuantityForm")'>Generate graph</li>
+        <form id="primForm" action="/exact/prim" method="get">
+            <li id="menuItem2" onclick="submitForm('primForm')">Run Prim</li>
+        </form>
+        <form id="kruskalForm" action="/exact/kruskal" method="get">
+            <li id="menuItem3" onclick="submitForm('kruskalForm')">Run Kruskal</li>
+        </form>
+    </ul>
+</div>

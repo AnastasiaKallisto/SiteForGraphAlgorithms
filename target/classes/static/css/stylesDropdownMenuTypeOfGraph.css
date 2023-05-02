@@ -1,0 +1,65 @@
+.dropdown {
+    overflow: hidden;
+    width: 255px;
+    height: 50px;
+    margin-top: 5px;
+    margin-left: 5px;
+    transition: all 0.3s ease;
+}
+
+.dropbtn {
+    background-color: #F3E2A9;
+    font-family: "Palatino Linotype", serif;
+    width: 250px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+/* Выпадающее содержимое (скрыто по умолчанию) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #F3E2A9;
+    width: 250px;
+    height: 50px;
+    text-align: center;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Ссылки внутри выпадающего списка */
+.dropdown-a {
+    color: black;
+    width: 250px;
+    height: 50px;
+    /*для выравнивания по вертикали*/
+    line-height: 50px; 
+    text-align: center;
+    font-family: "Palatino Linotype", serif;
+    background-color: #F3E2A9;
+    text-decoration: none;
+    display: block;
+    border: none;
+    cursor: pointer;
+}
+
+/* Изменение цвета выпадающих ссылок при наведении курсора */
+.dropdown-a:hover {
+    background-color: #F3D59B;
+    border: none;
+}
+
+/* Показать выпадающее меню при наведении курсора */
+
+.dropdown--active .dropdown-content {
+    display: block;
+}
+
+.dropdown .dropbtn:hover {
+    background-color: #F3D59B;
+    border: none;
+}

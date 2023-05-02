@@ -1,0 +1,42 @@
+
+body{
+    background-color: #FBF8EF;
+    overflow-y: hidden;
+    margin: 0;
+}
+
+.active {
+    background-color: #FAAC58;
+}
+
+.canvas {
+    display: block;
+    margin-left: 260px;
+    margin-top: 5px;
+    margin-right: 1vw;
+    width: 90vh;
+    height: 90vh;
+    border: 1px solid gray;
+}
+
+.textInfo {
+    font-size: 18px;
+    position: page;
+    margin-left: 300px;
+    margin-top: -40px;
+}
+
+.btn-close {
+    min-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+    margin-right: 0;
+    background-image:url('/img/closeIcon.png');
+    cursor: pointer;
+}
+
+.textView {
+    width : 98%;
+    height: 20%;
+    margin-top: 5px;
+}

@@ -1,0 +1,30 @@
+#menu{
+    background-color: #F3E2A9;
+    width: 250px;
+    height: 18vh;
+    position: absolute;
+    top: 60px;
+    left: 5px;
+}
+#menu ul{
+    padding: 0;
+    margin: 0;
+}
+#menu li{
+    list-style: none;
+    padding: 10px;
+    font-size: 16px;
+    height: 3vh;
+    font-family: "Palatino Linotype", serif;
+    color: black;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+#menu li:hover{
+    background-color: #F3D59B;
+    font-family: "Palatino Linotype", serif;
+    height: 3.5vh;
+    padding: 11px;
+    font-size: 17px;
+}
