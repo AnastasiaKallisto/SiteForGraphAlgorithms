@@ -69,6 +69,12 @@ public class IntervalGraphService {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph.getEdges());
+        task.start();
+        try {
+            task.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(task);
         List<IntervalGraph> allDecisions = new ArrayList<>(getDecisionsWithoutRepeating(graph, allDecisionsWithRepeating));
         dao.setIntervalGraphsPrim(allDecisions);
@@ -91,6 +97,12 @@ public class IntervalGraphService {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph.getEdges());
+        task.start();
+        try {
+            task.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(task);
         List<IntervalGraph> allDecisions = new ArrayList<>(getDecisionsWithoutRepeating(graph, allDecisionsWithRepeating));
         dao.setIntervalGraphsKruskal(allDecisions);

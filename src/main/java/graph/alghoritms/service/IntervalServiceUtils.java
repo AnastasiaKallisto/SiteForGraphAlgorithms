@@ -15,10 +15,19 @@ public class IntervalServiceUtils {
         do {
             nextTasks.clear();
             for (TaskStructure taskStructure : nextTasksStructures) {
-                nextTasks.add(new Task(taskStructure));
+                Task t = new Task(taskStructure);
+                t.start();
+                nextTasks.add(t);
             }
+//            System.gc();
+//            System.out.println("clear");
             nextTasksStructures.clear();
             for (Task t : nextTasks) {
+                try{
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if (t.getMinSpanningTree() != null) {
                     allDecisionsWithRepeating.add(t.getMinSpanningTree());
                 } else {

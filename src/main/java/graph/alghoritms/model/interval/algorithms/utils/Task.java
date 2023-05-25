@@ -7,14 +7,19 @@ import graph.alghoritms.model.interval.algorithms.IntervalGraphAlghoritm;
 import graph.alghoritms.model.interval.algorithms.Partition;
 import graph.alghoritms.model.interval.algorithms.Probability;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Task {
+public class Task extends Thread{
     // варианты компонентов, в которые мы можем прийти отсюда
     private ArrayList<TaskStructure> nextTasks;
     // null если не дошли до листа дерева задач,
     // иначе - это мин.остовное дерево (одно из)
     private IntervalGraph minSpanningTree;
+    private double probability;
+    private IntervalGraphAlghoritm algorithm;
+    private IntervalGraph graph;
+    private List<IntervalEdge> availableEdges;
 
     /**
      * @param probability    - вероятность подзадачи
@@ -27,6 +32,21 @@ public class Task {
                 IntervalGraphAlghoritm algorithm,
                 IntervalGraph graph,
                 List<IntervalEdge> availableEdges) {
+        super();
+        this.probability = probability;
+        this.algorithm = algorithm;
+        this.graph = graph;
+        this.availableEdges = availableEdges;
+    }
+
+    public Task(TaskStructure taskStructure){
+        this(taskStructure.getProbability(),
+                taskStructure.getAlgorithm(),
+                taskStructure.getGraph(),
+                taskStructure.getAvailableEdges());
+    }
+
+    public void run() {
         this.nextTasks = new ArrayList<>();
         // Получим множество следующих потенциальных ребер, множество Q
         // Также внутри этой функции удаляются из списка все рёбра,
@@ -106,13 +126,6 @@ public class Task {
             minSpanningTree = new IntervalGraph(graph);
             minSpanningTree.setProbability(probability);
         }
-    }
-
-    public Task(TaskStructure taskStructure){
-        this(taskStructure.getProbability(),
-                taskStructure.getAlgorithm(),
-                taskStructure.getGraph(),
-                taskStructure.getAvailableEdges());
     }
 
     public ArrayList<TaskStructure> getNextTasksStructures(){

@@ -67,6 +67,12 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph1.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph1, allDecisionsWithRepeating);
         double probabilitySum = 0;
@@ -91,6 +97,12 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph1.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph1, allDecisionsWithRepeating);
         double probabilitySum = 0;
@@ -114,6 +126,12 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph2.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph2, allDecisionsWithRepeating);
         double probabilitySum = 0;
@@ -137,6 +155,12 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph2.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph2, allDecisionsWithRepeating);
         double probabilitySum = 0;
@@ -176,6 +200,12 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        System.out.println((double) (System.currentTimeMillis() - time)/1000);
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
@@ -214,6 +244,12 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        System.out.println(System.currentTimeMillis() - time);
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
@@ -236,6 +272,12 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph3.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        long timeAfterTask = System.currentTimeMillis();
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph3, allDecisionsWithRepeating);
@@ -264,6 +306,12 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph3.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        System.out.println((double) (System.currentTimeMillis() - time) / 1000);
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph3, allDecisionsWithRepeating);
@@ -288,6 +336,12 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        System.out.println(System.currentTimeMillis() - time);
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
@@ -308,6 +362,12 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
+        component.start();
+        try {
+            component.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
         List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
         double probabilitySum = 0;
@@ -329,6 +389,12 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
+        component1.start();
+        try {
+            component1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating1 = getAllDecisionsWithRepeating(component1);
         List<IntervalGraph> allDecisions1 = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating1);
         Task component2 = new Task(
@@ -336,6 +402,12 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
+        component2.start();
+        try {
+            component2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<IntervalGraph> allDecisionsWithRepeating2 = getAllDecisionsWithRepeating(component2);
         List<IntervalGraph> allDecisions2 = getDecisionsWithoutRepeating(graph2, allDecisionsWithRepeating2);
         double probabilitySum = 0;
