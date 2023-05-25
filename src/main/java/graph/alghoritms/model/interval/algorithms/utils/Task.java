@@ -11,11 +11,10 @@ import java.util.*;
 
 public class Task {
     // варианты компонентов, в которые мы можем прийти отсюда
-    private ArrayList<Task> nextTasks;
+    private ArrayList<TaskStructure> nextTasks;
     // null если не дошли до листа дерева задач,
     // иначе - это мин.остовное дерево (одно из)
     private IntervalGraph minSpanningTree;
-//    private static long podgraph = 0;
 
     /**
      * @param probability    - вероятность подзадачи
@@ -28,9 +27,6 @@ public class Task {
                 IntervalGraphAlghoritm algorithm,
                 IntervalGraph graph,
                 List<IntervalEdge> availableEdges) {
-//        System.out.println("======================================================");
-//        System.out.println("Зашли в подграф " + System.currentTimeMillis());
-//        System.out.println("Подзадача № " + podgraph++);
         this.nextTasks = new ArrayList<>();
         // Получим множество следующих потенциальных ребер, множество Q
         // Также внутри этой функции удаляются из списка все рёбра,
@@ -67,7 +63,6 @@ public class Task {
                 //сложность O(N^2*2^N)
                 double nextTaskProbability = getProbability(
                         probability, edge, partitionOfEdgeWeight, helpQ, minRightBorder);
-
                 /*
                  * Для формирования подзадачи
                  * мы рассматриваем добавление ребра edge,
@@ -99,7 +94,7 @@ public class Task {
                 helpListOfAvailableEdges.remove(edge);
                 // создаем новую задачу со своим новым начальным графом
                 // и новым множеством доступных ребер
-                nextTasks.add(new Task(
+                nextTasks.add(new TaskStructure(
                         nextTaskProbability,
                         algorithm,
                         helpGraph,
@@ -111,6 +106,17 @@ public class Task {
             minSpanningTree = new IntervalGraph(graph);
             minSpanningTree.setProbability(probability);
         }
+    }
+
+    public Task(TaskStructure taskStructure){
+        this(taskStructure.getProbability(),
+                taskStructure.getAlgorithm(),
+                taskStructure.getGraph(),
+                taskStructure.getAvailableEdges());
+    }
+
+    public ArrayList<TaskStructure> getNextTasksStructures(){
+        return nextTasks;
     }
 
     //сложность O(N^2*2^N)
@@ -135,77 +141,6 @@ public class Task {
      * Полученные решения могут дублироваться
      * (наборы ребер могут повторяться, хотя порядок и вероятность могут быть разными)
      * */
-    public ArrayList<IntervalGraph> getDecisions() {
-        ArrayList<IntervalGraph> graphs = new ArrayList<>();
-        if (minSpanningTree != null) {
-            graphs.add(minSpanningTree);
-        } else {
-            for (Task task : nextTasks) {
-                graphs.addAll(task.getDecisions());
-            }
-        }
-        graphs.sort(IntervalGraph::reverseCompareTo);
-        for (int i = 0; i < graphs.size(); i++) {
-            graphs.get(i).setId(i);
-        }
-        return graphs;
-    }
-
-    /*
-     * Получаем все решения методом getDecisions
-     * С помощью HashMap (отображение граф-вероятность)
-     * Складываем одинаковые (сравниваем наборы ребер) решения в одно
-     * И складываем у них вероятности
-     * А затем формируем множество HashSet графов
-     * в которых мы восстановим оригинальные веса рёбер
-     * и установим им правильную посчитанную вероятность
-     * */
-    public Set<IntervalGraph> getDecisionsWithoutRepeating(IntervalGraph originalGraph) {
-        ArrayList<IntervalGraph> graphs = getDecisions();
-        HashMap<IntervalGraph, Double> graphHashMap = new HashMap<>();
-        for (IntervalGraph graph : graphs) {
-            if (graphHashMap.containsKey(graph)) {
-                // складываем вероятности
-                graphHashMap.put(graph, graphHashMap.get(graph) + graph.getProbability());
-            } else {
-                graphHashMap.put(graph, graph.getProbability());
-            }
-        }
-        Set<IntervalGraph> keySet = new HashSet<>();
-        for (IntervalGraph graph : graphHashMap.keySet()) {
-            // восстанавливаем оригинальные веса у рёбер
-            List<IntervalEdge> originalEdges = getEdgesWithOriginalWeights(
-                    originalGraph.getEdges(), graph.getEdges());
-            IntervalGraph g = new IntervalGraph(
-                    graph.getId(), originalEdges, graph.getVertices());
-            g.setProbability(graphHashMap.get(graph));
-            keySet.add(g);
-        }
-        return keySet;
-    }
-
-    public IntervalEdge getEdgeWithOriginalWeight(
-            IntervalEdge edge,
-            List<IntervalEdge> edgesWithOriginalWeights) {
-        for (IntervalEdge e : edgesWithOriginalWeights) {
-            if (e.equals(edge))
-                return e;
-        }
-        return edge;
-    }
-
-    public List<IntervalEdge> getEdgesWithOriginalWeights(
-            List<IntervalEdge> originalEdges,
-            List<IntervalEdge> edges) {
-        if (originalEdges.size() == 0 || edges.size() == 0) {
-            return edges;
-        }
-        List<IntervalEdge> answer = new ArrayList<>(edges.size());
-        for (IntervalEdge e : edges) {
-            answer.add(getEdgeWithOriginalWeight(e, originalEdges));
-        }
-        return answer;
-    }
 
     //сложность O(N)
     public static int getMinRightBorder(List<IntervalEdge> edges) {
@@ -216,5 +151,9 @@ public class Task {
                 minRightBorder = w;
         }
         return minRightBorder;
+    }
+
+    public IntervalGraph getMinSpanningTree(){
+        return minSpanningTree;
     }
 }

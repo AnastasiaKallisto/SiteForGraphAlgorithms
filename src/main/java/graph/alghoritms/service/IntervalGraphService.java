@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static graph.alghoritms.service.IntervalServiceUtils.getAllDecisionsWithRepeating;
+import static graph.alghoritms.service.IntervalServiceUtils.getDecisionsWithoutRepeating;
+
 @Service
 public class IntervalGraphService {
     IntervalGraphDao dao = new IntervalGraphDaoImpl();
@@ -61,19 +64,18 @@ public class IntervalGraphService {
         IntervalGraph graph = dao.getIntervalGraph();
         if (graph == null)
             return new GetIntervalDecisionsDtoResponse(null);
-//        System.out.println("======================================================");
-//        long startTime = System.currentTimeMillis();
         Task task = new Task(
                 1,
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph.getEdges());
-//        long endTime = System.currentTimeMillis();
-//        System.out.println("Время выполнения алгоритма: " + (endTime - startTime));
-        List<IntervalGraph> allDecisions = new ArrayList<>(task.getDecisionsWithoutRepeating(graph));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(task);
+        List<IntervalGraph> allDecisions = new ArrayList<>(getDecisionsWithoutRepeating(graph, allDecisionsWithRepeating));
         dao.setIntervalGraphsPrim(allDecisions);
         return new GetIntervalDecisionsDtoResponse(allDecisions);
     }
+
+
 
     public GetIntervalDecisionsDtoResponse getIntervalKruskalGraphs() {
         List<IntervalGraph> graphs = dao.getIntervalGraphsKruskal();
@@ -89,7 +91,8 @@ public class IntervalGraphService {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph.getEdges());
-        List<IntervalGraph> allDecisions = new ArrayList<>(task.getDecisionsWithoutRepeating(graph));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(task);
+        List<IntervalGraph> allDecisions = new ArrayList<>(getDecisionsWithoutRepeating(graph, allDecisionsWithRepeating));
         dao.setIntervalGraphsKruskal(allDecisions);
         return new GetIntervalDecisionsDtoResponse(allDecisions);
     }

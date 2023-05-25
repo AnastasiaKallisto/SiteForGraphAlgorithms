@@ -5,9 +5,11 @@ import graph.alghoritms.model.interval.algorithms.utils.Task;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
+import static graph.alghoritms.service.IntervalServiceUtils.getAllDecisionsWithRepeating;
+import static graph.alghoritms.service.IntervalServiceUtils.getDecisionsWithoutRepeating;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IntervalGraphTests {
@@ -60,15 +62,13 @@ public class IntervalGraphTests {
 
     @Test
     public void testCountProbabilityKruskal1() {
-//        long time = System.nanoTime();
         Task component = new Task(
                 1,
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph1.getEdges());
-//        long timeAfterTask = System.nanoTime();
-        ArrayList<IntervalGraph> allDecisions = component.getDecisions();
-//        long timeAfterAll = System.nanoTime();
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph1, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph graph : allDecisions) {
             probabilitySum += graph.getProbability();
@@ -91,7 +91,8 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph1.getEdges());
-        ArrayList<IntervalGraph> allDecisions = component.getDecisions();
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph1, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph graph : allDecisions) {
             probabilitySum += graph.getProbability();
@@ -113,7 +114,8 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph2.getEdges());
-        ArrayList<IntervalGraph> allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph2));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph2, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph graph : allDecisions) {
             probabilitySum += graph.getProbability();
@@ -135,7 +137,8 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph2.getEdges());
-        ArrayList<IntervalGraph> allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph2));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph2, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph graph : allDecisions) {
             probabilitySum += graph.getProbability();
@@ -174,7 +177,8 @@ public class IntervalGraphTests {
                 new IntervalGraph(),
                 graph4.getEdges());
 //        System.out.println((double) (System.currentTimeMillis() - time)/1000);
-        ArrayList<IntervalGraph> allDecisions = component.getDecisions();
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
 
         double probabilitySum = 0;
         for (IntervalGraph g : allDecisions) {
@@ -184,7 +188,6 @@ public class IntervalGraphTests {
 //        System.out.println(allDecisions);
 
 //        System.out.println("РЕШЕНИЯ БЕЗ ДУБЛИРОВАНИЯ");
-        allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph4));
 
 //        System.out.println(allDecisions);
         assertEquals(1, probabilitySum, 1e-6);
@@ -212,7 +215,8 @@ public class IntervalGraphTests {
                 new IntervalGraph(),
                 graph4.getEdges());
 //        System.out.println(System.currentTimeMillis() - time);
-        ArrayList<IntervalGraph> allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph4));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph g : allDecisions) {
             probabilitySum += g.getProbability();
@@ -233,7 +237,8 @@ public class IntervalGraphTests {
                 new IntervalGraph(),
                 graph3.getEdges());
 //        long timeAfterTask = System.currentTimeMillis();
-        ArrayList<IntervalGraph> allDecisions = component.getDecisions();
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph3, allDecisionsWithRepeating);
 //        long timeAfterAll = System.currentTimeMillis();
         double probabilitySum = 0;
         for (IntervalGraph g : allDecisions) {
@@ -260,7 +265,8 @@ public class IntervalGraphTests {
                 new IntervalGraph(),
                 graph3.getEdges());
 //        System.out.println((double) (System.currentTimeMillis() - time) / 1000);
-        ArrayList<IntervalGraph> allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph3));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph3, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph g : allDecisions) {
             probabilitySum += g.getProbability();
@@ -283,7 +289,8 @@ public class IntervalGraphTests {
                 new IntervalGraph(),
                 graph4.getEdges());
 //        System.out.println(System.currentTimeMillis() - time);
-        ArrayList<IntervalGraph> allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph4));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
 //        System.out.println("ВСЕ РЕШЕНИЯ БЕЗ ДУБЛИРОВАНИЯ, их кол-во " + allDecisions.size());
         allDecisions.sort(IntervalGraph::reverseCompareTo);
 //        System.out.println(allDecisions);
@@ -301,7 +308,8 @@ public class IntervalGraphTests {
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
-        ArrayList<IntervalGraph> allDecisions = new ArrayList<>(component.getDecisionsWithoutRepeating(graph4));
+        List<IntervalGraph> allDecisionsWithRepeating = getAllDecisionsWithRepeating(component);
+        List<IntervalGraph> allDecisions = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating);
         double probabilitySum = 0;
         for (IntervalGraph g : allDecisions) {
             probabilitySum += g.getProbability();
@@ -321,13 +329,15 @@ public class IntervalGraphTests {
                 new IntervalKruskalAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
-        ArrayList<IntervalGraph> allDecisions1 = component1.getDecisions();
+        List<IntervalGraph> allDecisionsWithRepeating1 = getAllDecisionsWithRepeating(component1);
+        List<IntervalGraph> allDecisions1 = getDecisionsWithoutRepeating(graph4, allDecisionsWithRepeating1);
         Task component2 = new Task(
                 1,
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph4.getEdges());
-        ArrayList<IntervalGraph> allDecisions2 = component2.getDecisions();
+        List<IntervalGraph> allDecisionsWithRepeating2 = getAllDecisionsWithRepeating(component2);
+        List<IntervalGraph> allDecisions2 = getDecisionsWithoutRepeating(graph2, allDecisionsWithRepeating2);
         double probabilitySum = 0;
         for (IntervalGraph g : allDecisions1) {
             probabilitySum += g.getProbability();
