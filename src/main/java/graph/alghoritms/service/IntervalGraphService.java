@@ -61,11 +61,15 @@ public class IntervalGraphService {
         IntervalGraph graph = dao.getIntervalGraph();
         if (graph == null)
             return new GetIntervalDecisionsDtoResponse(null);
+//        System.out.println("======================================================");
+//        long startTime = System.currentTimeMillis();
         Task task = new Task(
                 1,
                 new IntervalPrimAlghoritm(),
                 new IntervalGraph(),
                 graph.getEdges());
+//        long endTime = System.currentTimeMillis();
+//        System.out.println("Время выполнения алгоритма: " + (endTime - startTime));
         List<IntervalGraph> allDecisions = new ArrayList<>(task.getDecisionsWithoutRepeating(graph));
         dao.setIntervalGraphsPrim(allDecisions);
         return new GetIntervalDecisionsDtoResponse(allDecisions);

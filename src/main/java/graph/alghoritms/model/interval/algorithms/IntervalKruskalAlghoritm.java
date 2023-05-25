@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class IntervalKruskalAlghoritm extends IntervalGraphAlghoritm {
 
+    //итоговая сложность N^3+N^3+N*logN=O(N^3)
     @Override
     public List<IntervalEdge> getQ(IntervalGraph graph, List<IntervalEdge> availableEdges) {
         /* Находим ребро с минимальной правой границей
@@ -20,9 +21,11 @@ public class IntervalKruskalAlghoritm extends IntervalGraphAlghoritm {
          * */
         List<IntervalEdge> needToBeRemoved = new ArrayList<>();
         List<IntervalEdge> answer = new ArrayList<>();
-        availableEdges.sort(IntervalEdge::compareToRight);
+        availableEdges.sort(IntervalEdge::compareToRight);//быстрая сортировка: ожидаемая скорость = N*logN или N^2
         int minRightBorder = 0;
+        // сложность цикла = N^3
         for (IntervalEdge edge : availableEdges) {
+            // оцениваем сложность searchChain = N^2
             if (!searchChain(edge.getA(), edge.getB(), graph, new HashSet<>())) {
                 minRightBorder = edge.getEndWeight();
                 break;
@@ -34,6 +37,7 @@ public class IntervalKruskalAlghoritm extends IntervalGraphAlghoritm {
         // Найдем ВСЕ ребра с весами меньше, чем minRightBorder,
         // попутно убирая те, что дают цикл.
         // Получим множество Q
+        //оценим сложность цикла N^3
         for (IntervalEdge edge : availableEdges) {
             //если левый вес меньше мин. правой границы
             if (edge.getStartWeight() < minRightBorder) {
@@ -52,6 +56,7 @@ public class IntervalKruskalAlghoritm extends IntervalGraphAlghoritm {
     //ищем цепочку из a в b.
     // Для этого рекурсивно будем смотреть непроверенные вершины, не придем ли мы из них в вершину b
     // по уже существующим ребрам дерева
+    // возьмем худший случай за N^2
     private static boolean searchChain(Integer a, Integer b, IntervalGraph graph, Set<Integer> checkedVertices) {
         Set<Integer> needToBeCheckedSet = new HashSet<>();
         for (IntervalEdge edge : graph.getEdges()) {
@@ -72,7 +77,7 @@ public class IntervalKruskalAlghoritm extends IntervalGraphAlghoritm {
                     }
                 }
             }
-        }
+        }// сложность N
         checkedVertices.add(a);// из нее точно не попадаем в b
         for (Integer vertex : needToBeCheckedSet) {
             if (searchChain(vertex, b, graph, checkedVertices)) {

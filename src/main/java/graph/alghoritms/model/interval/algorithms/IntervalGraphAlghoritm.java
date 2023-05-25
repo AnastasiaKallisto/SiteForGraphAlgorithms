@@ -18,6 +18,7 @@ public abstract class IntervalGraphAlghoritm {
     public static List<IntervalEdge> cutEdges(
             IntervalEdge minEdge, List<IntervalEdge> Q) {
         List<IntervalEdge> answer = new ArrayList<>();
+        // пусть длина Q = n, тогда время выполнения цикла = O(N)
         for (IntervalEdge edge : Q) {
             answer.add(new IntervalEdge(edge));
         }

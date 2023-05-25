@@ -15,22 +15,27 @@ public class Task {
     // null если не дошли до листа дерева задач,
     // иначе - это мин.остовное дерево (одно из)
     private IntervalGraph minSpanningTree;
+//    private static long podgraph = 0;
 
     /**
-     * @param probability - вероятность подзадачи
-     * @param algorithm - тип алгоритма (Прим, Краскал)
-     * @param graph - граф, для которого нужно вычислить варианты MST
+     * @param probability    - вероятность подзадачи
+     * @param algorithm      - тип алгоритма (Прим, Краскал)
+     * @param graph          - граф, для которого нужно вычислить варианты MST
      * @param availableEdges - доступные для добавления рёбра
-     * Вызов этого конструктора полностью задает всё дерево задач.
-     * **/
+     *                       Вызов этого конструктора полностью задает всё дерево задач.
+     **/
     public Task(double probability,
                 IntervalGraphAlghoritm algorithm,
                 IntervalGraph graph,
                 List<IntervalEdge> availableEdges) {
+//        System.out.println("======================================================");
+//        System.out.println("Зашли в подграф " + System.currentTimeMillis());
+//        System.out.println("Подзадача № " + podgraph++);
         this.nextTasks = new ArrayList<>();
         // Получим множество следующих потенциальных ребер, множество Q
         // Также внутри этой функции удаляются из списка все рёбра,
         // которые могли бы дать цикл
+//        оцениваем сложность getQ = O(N^3)
         List<IntervalEdge> Q = algorithm.getQ(graph, availableEdges);
 
         if (Q.size() != 0) {
@@ -41,13 +46,14 @@ public class Task {
             И рассмотрим все потенциальные рёбра в качестве минимальных
             Чтобы сформировать подзадачи
              */
-            int minRightBorder = getMinRightBorder(Q);
-            List<Integer> bordersForPartitionOfQ = Partition.getBordersForPartitionOfQ(Q);
-            List<Interval> partitionForQ = Partition.getPartitionForQ(bordersForPartitionOfQ);
+            int minRightBorder = getMinRightBorder(Q);//сложность O(N)
+            List<Integer> bordersForPartitionOfQ = Partition.getBordersForPartitionOfQ(Q);// сложность O(N*logN)
+            List<Interval> partitionForQ = Partition.getPartitionForQ(bordersForPartitionOfQ);// сложность O(N)
             List<IntervalEdge> helpQ = new ArrayList<>(Q);
             // потому что иначе Q сортируется и это портит проход итератором по Q
 
-            for (IntervalEdge edge: Q) {
+            //сложность O(N^3*2^N)
+            for (IntervalEdge edge : Q) {
                 /* Для расчёта вероятности
                 Сформируем вспомогательный граф с этим ребром,
                 чтобы отправить его в следующие задачи
@@ -55,34 +61,37 @@ public class Task {
                 и посчитаем вероятность выбрать именно это ребро из Q
                 Это будет вероятность, которую мы отправим в подзадачу
                  */
+                //сложность O(N)
                 List<Interval> partitionOfEdgeWeight = Partition.getPartitionFor_e_q(
                         edge, bordersForPartitionOfQ, partitionForQ);
+                //сложность O(N^2*2^N)
                 double nextTaskProbability = getProbability(
                         probability, edge, partitionOfEdgeWeight, helpQ, minRightBorder);
 
                 /*
-                * Для формирования подзадачи
-                * мы рассматриваем добавление ребра edge,
-                * Считая, что его точный вес оказался меньше остальных
-                * Подрежем вес ребра справа по минимальной правой границе
-                * Сформируем вспомогательный граф для подзадачи
-                * В который добавили это ребро с подрезанным весом
-                *
-                * Сформируем вспомогательный список доступных рёбер
-                * Из которого мы уберем это ребро
-                * А также мы уберем из него Q и добавим Q1 на основе Q,
-                * только с подрезанными слева весами
-                * на тот случай, если были рёбра, у которых левая граница веса меньше
-                * чем у текущего ребра
-                *
-                * сравнение рёбер на равенство идет только по вершинам,
-                * веса ребер при проверке на равенство значения не имеют
-                * мы удалили рёбра из Q и добавили их же, но уже с другими весами
-                * */
+                 * Для формирования подзадачи
+                 * мы рассматриваем добавление ребра edge,
+                 * Считая, что его точный вес оказался меньше остальных
+                 * Подрежем вес ребра справа по минимальной правой границе
+                 * Сформируем вспомогательный граф для подзадачи
+                 * В который добавили это ребро с подрезанным весом
+                 *
+                 * Сформируем вспомогательный список доступных рёбер
+                 * Из которого мы уберем это ребро
+                 * А также мы уберем из него Q и добавим Q1 на основе Q,
+                 * только с подрезанными слева весами
+                 * на тот случай, если были рёбра, у которых левая граница веса меньше
+                 * чем у текущего ребра
+                 *
+                 * сравнение рёбер на равенство идет только по вершинам,
+                 * веса ребер при проверке на равенство значения не имеют
+                 * мы удалили рёбра из Q и добавили их же, но уже с другими весами
+                 * */
                 IntervalEdge cutEdge = new IntervalEdge(edge);
                 cutEdge.setEnd(minRightBorder);
                 IntervalGraph helpGraph = new IntervalGraph(graph);
                 helpGraph.addEdge(cutEdge);
+                //сложность O(N)
                 List<IntervalEdge> Q1 = IntervalGraphAlghoritm.cutEdges(cutEdge, helpQ);
                 List<IntervalEdge> helpListOfAvailableEdges = new ArrayList<>(availableEdges);
                 helpListOfAvailableEdges.removeAll(helpQ);
@@ -104,6 +113,7 @@ public class Task {
         }
     }
 
+    //сложность O(N^2*2^N)
     public double getProbability(
             double probability,
             IntervalEdge edge,
@@ -119,12 +129,12 @@ public class Task {
     }
 
     /*
-    * Формируем пустое множество деревьев, из них формируется ответ на задачу
-    * Если в этой задаче задано MST, значит, это лист, добавляем дерево из листа
-    * Если не задано, значит, закапываемся вглубь и получим решения из подзадач
-    * Полученные решения могут дублироваться
-    * (наборы ребер могут повторяться, хотя порядок и вероятность могут быть разными)
-    * */
+     * Формируем пустое множество деревьев, из них формируется ответ на задачу
+     * Если в этой задаче задано MST, значит, это лист, добавляем дерево из листа
+     * Если не задано, значит, закапываемся вглубь и получим решения из подзадач
+     * Полученные решения могут дублироваться
+     * (наборы ребер могут повторяться, хотя порядок и вероятность могут быть разными)
+     * */
     public ArrayList<IntervalGraph> getDecisions() {
         ArrayList<IntervalGraph> graphs = new ArrayList<>();
         if (minSpanningTree != null) {
@@ -135,33 +145,34 @@ public class Task {
             }
         }
         graphs.sort(IntervalGraph::reverseCompareTo);
-        for (int i = 0; i < graphs.size(); i++){
+        for (int i = 0; i < graphs.size(); i++) {
             graphs.get(i).setId(i);
         }
         return graphs;
     }
+
     /*
-    * Получаем все решения методом getDecisions
-    * С помощью HashMap (отображение граф-вероятность)
-    * Складываем одинаковые (сравниваем наборы ребер) решения в одно
-    * И складываем у них вероятности
-    * А затем формируем множество HashSet графов
-    * в которых мы восстановим оригинальные веса рёбер
-    * и установим им правильную посчитанную вероятность
-    * */
-    public Set<IntervalGraph> getDecisionsWithoutRepeating(IntervalGraph originalGraph){
+     * Получаем все решения методом getDecisions
+     * С помощью HashMap (отображение граф-вероятность)
+     * Складываем одинаковые (сравниваем наборы ребер) решения в одно
+     * И складываем у них вероятности
+     * А затем формируем множество HashSet графов
+     * в которых мы восстановим оригинальные веса рёбер
+     * и установим им правильную посчитанную вероятность
+     * */
+    public Set<IntervalGraph> getDecisionsWithoutRepeating(IntervalGraph originalGraph) {
         ArrayList<IntervalGraph> graphs = getDecisions();
         HashMap<IntervalGraph, Double> graphHashMap = new HashMap<>();
-        for(IntervalGraph graph: graphs){
-            if (graphHashMap.containsKey(graph)){
+        for (IntervalGraph graph : graphs) {
+            if (graphHashMap.containsKey(graph)) {
                 // складываем вероятности
-                graphHashMap.put(graph, graphHashMap.get(graph)+graph.getProbability());
+                graphHashMap.put(graph, graphHashMap.get(graph) + graph.getProbability());
             } else {
                 graphHashMap.put(graph, graph.getProbability());
             }
         }
         Set<IntervalGraph> keySet = new HashSet<>();
-        for (IntervalGraph graph: graphHashMap.keySet()){
+        for (IntervalGraph graph : graphHashMap.keySet()) {
             // восстанавливаем оригинальные веса у рёбер
             List<IntervalEdge> originalEdges = getEdgesWithOriginalWeights(
                     originalGraph.getEdges(), graph.getEdges());
@@ -175,8 +186,8 @@ public class Task {
 
     public IntervalEdge getEdgeWithOriginalWeight(
             IntervalEdge edge,
-            List<IntervalEdge> edgesWithOriginalWeights){
-        for (IntervalEdge e: edgesWithOriginalWeights){
+            List<IntervalEdge> edgesWithOriginalWeights) {
+        for (IntervalEdge e : edgesWithOriginalWeights) {
             if (e.equals(edge))
                 return e;
         }
@@ -185,20 +196,21 @@ public class Task {
 
     public List<IntervalEdge> getEdgesWithOriginalWeights(
             List<IntervalEdge> originalEdges,
-            List<IntervalEdge> edges){
-        if (originalEdges.size() == 0 || edges.size() == 0){
+            List<IntervalEdge> edges) {
+        if (originalEdges.size() == 0 || edges.size() == 0) {
             return edges;
         }
         List<IntervalEdge> answer = new ArrayList<>(edges.size());
-        for (IntervalEdge e: edges){
+        for (IntervalEdge e : edges) {
             answer.add(getEdgeWithOriginalWeight(e, originalEdges));
         }
         return answer;
     }
 
-    public static int getMinRightBorder(List<IntervalEdge> edges){
+    //сложность O(N)
+    public static int getMinRightBorder(List<IntervalEdge> edges) {
         int minRightBorder = edges.get(0).getEndWeight();
-        for (IntervalEdge edge : edges){
+        for (IntervalEdge edge : edges) {
             int w = edge.getEndWeight();
             if (minRightBorder > w)
                 minRightBorder = w;

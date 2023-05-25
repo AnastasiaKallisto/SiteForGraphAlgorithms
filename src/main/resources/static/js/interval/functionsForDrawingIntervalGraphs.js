@@ -66,9 +66,12 @@ function graphToReadingFormat(graph) {
         graph.minWeight +
         "\nMax weight: " +
         graph.maxWeight +
-        "\nEdges:\n";
+        "\nQuantity of edges: "
+        + graph.edges.length +
+        "\n";
+    let i = 1;
     graph.edges.forEach((edge) => {
-        answer += "(" + edge.a.number +
+        answer += i++ + ". " + "(" + edge.a.number +
             ", " + edge.b.number +
             ") [" + edge.minWeight.toFixed(2) +
             " - " +

@@ -26,13 +26,15 @@ public class Probability {
             List<Interval> list_of_v_q_j,
             List<IntervalEdge> Q,
             int minRightBorder) {
+        //O(N*logN)
         Q.sort(IntervalEdge::compareToLeft);
         double probability = 0;
+        //сложность O(N^2*2^N)
         for (Interval v_q_j : list_of_v_q_j) {
             if (v_q_j.getStart()<minRightBorder) {
-                List<Integer> R = getR_for_v_q_j(v_q_j, Q.indexOf(e_q), Q);
-                probability += count_P_e_q_if_weight_q_in_v_q_j(R, v_q_j, Q)
-                        * count_P_v_q_in_v_q_j(v_q_j, e_q.getIntervalWeight());
+                List<Integer> R = getR_for_v_q_j(v_q_j, Q.indexOf(e_q), Q);//сложность O(N)
+                probability += count_P_e_q_if_weight_q_in_v_q_j(R, v_q_j, Q)//    сложность O(N*2^N)
+                        * count_P_v_q_in_v_q_j(v_q_j, e_q.getIntervalWeight());//сложность O(1)
             }
         }
         probability *= prevProbability;
@@ -115,6 +117,7 @@ public class Probability {
      * @return - вероятность выбора ребра e_q из всех ребер из Q, при условии, что
      * точный вес ребра e_q из интервала v_q_j
      */
+//    сложность O(N*2^N)
     public static double count_P_e_q_if_weight_q_in_v_q_j(
             List<Integer> R, Interval v_q_j, List<IntervalEdge> Q) {
         // нужно множество всех подмножеств
@@ -126,6 +129,7 @@ public class Probability {
         if (n == 0)
             return 1;
         double answer = 0;
+        //оценим сложность в (2*N)*2^N = O(N*2^N)
         for (int i = 0; i < Math.pow(2, n); i++) {
             int[] binarValue = getBinar(i, n);
             Set<Integer> r = new HashSet<>();
@@ -134,7 +138,7 @@ public class Probability {
                     r.add(R.get(j));
                 }
             }
-            answer += count_P_r(r, R, v_q_j, Q) / (r.size() + 1);
+            answer += count_P_r(r, R, v_q_j, Q) / (r.size() + 1);//сложность O(N)
         }
         return answer;
     }
