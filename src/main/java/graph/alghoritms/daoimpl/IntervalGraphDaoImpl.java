@@ -36,6 +36,7 @@ public class IntervalGraphDaoImpl implements IntervalGraphDao {
     @Override
     public void setIntervalGraphsPrim(List<IntervalGraph> intervalGraphsPrim) {
         database.intervalGraphsPrim = intervalGraphsPrim;
+        database.intervalGraphsPrim.sort(IntervalGraph::reverseCompareTo);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class IntervalGraphDaoImpl implements IntervalGraphDao {
     @Override
     public void setIntervalGraphsKruskal(List<IntervalGraph> intervalGraphsKruskal) {
         database.intervalGraphsKruskal = intervalGraphsKruskal;
+        database.intervalGraphsKruskal.sort(IntervalGraph::reverseCompareTo);
     }
 
     @Override
